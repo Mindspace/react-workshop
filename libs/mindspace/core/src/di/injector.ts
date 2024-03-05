@@ -13,7 +13,12 @@ export let rootInjector: DependencyInjector;
  * @returns
  */
 export const inject = <T = unknown>(token: Token): T => {
-  return rootInjector.get(token);
+  const result = rootInjector.get(token);
+  if (!result) {
+    throw new Error(`Unable to inject ${String(token)}`);
+  } 
+
+  return result;
 };
 
 /**
