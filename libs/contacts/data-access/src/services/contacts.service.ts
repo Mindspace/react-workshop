@@ -1,5 +1,6 @@
 import { CONTACTS } from './data/contacts.data';
 import { Contact } from './contacts.model';
+import { InjectionToken } from '@mindspace/di';
 
 export type Params = Record<string, string>;
 export interface FetchOptions {
@@ -11,8 +12,9 @@ export interface FetchOptions {
  */
 let contacts: Contact[] = [];
 
-const API_ENDPOINT = 'https://uifaces.co/api?limit=25;';
-const API_KEY = '873771d7760b846d51d025ac5804ab';
+	
+export const API_ENDPOINT = new InjectionToken('endpoint.ui-faces.com');
+export const API_KEY = new InjectionToken('api-key.ui-faces.com');
 
 async function fetchContacts(params: Params, options: FetchOptions) {
   const url = options.apiEndPoint + (params.userName ? `&name=${params.userName}` : '');
@@ -27,6 +29,9 @@ async function fetchContacts(params: Params, options: FetchOptions) {
 }
 
 export class ContactsService {
+
+  constructor(private apiEndPoint: string, private apiKey: string) {}
+
   /**
    * Load a list from the REST service...
    */
@@ -71,8 +76,8 @@ export class ContactsService {
    * internal wrapper to fetch function...
    */
   private loadContacts(params: Params): Promise<Contact[]> {
-    const apiEndPoint = API_ENDPOINT;
-    const apiKey = API_KEY;
+    const apiEndPoint = API_ENDPOINT.toString();
+    const apiKey = API_KEY.toString();
     return fetchContacts(params || {}, { apiEndPoint, apiKey });
   }
 }
