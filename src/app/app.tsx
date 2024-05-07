@@ -1,4 +1,4 @@
-import { ContactDashboard } from '@workshop/ui';
+import ContactDashboard from '@workshop/ui';
 
 export function App() {
   return <ContactDashboard />;
